@@ -1,0 +1,12 @@
+# Dependencies & build output (rebuilt inside the image)
+**/node_modules
+frontend/dist
+
+# Go build artifacts
+backend/*.exe
+backend/server
+
+# Local & bulky files
+*.rar
+**/.git
+**/.DS_Store
