@@ -1,4 +1,4 @@
-# CTI Dashboard — Ransomware Threat Intelligence
+# CTI Dashboard (Ransomware Threat Intelligence)
 
 A full-stack Cyber Threat Intelligence dashboard for ransomware incidents. A **Go**
 backend loads and cleans the incident dataset (`data.csv`), computes the analytics
