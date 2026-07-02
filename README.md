@@ -12,6 +12,64 @@ The whole thing ships as a single Docker image.
 └──────────────────────┘        JSON            └────────────────────────┘
 ```
 
+## 🇹🇷 Türkçe Özet
+
+Bu proje, fidye yazılımı (ransomware) saldırılarını görselleştiren bir **Siber Tehdit
+İstihbaratı (CTI) paneli**dir. Tüm veriler tek bir kaynaktan — `data.csv` dosyasından —
+beslenir; başka hiçbir dış veri kaynağı ya da API kullanılmaz.
+
+### 📊 Veri kaynağı (`data.csv`)
+
+Veri seti, kamuya açık fidye yazılımı takip platformlarından derlenen gerçek saldırı
+kayıtlarından oluşturulmuştur. Bu tür kayıtların toplandığı başlıca kaynaklar:
+
+- **RansomDB** — ransomware kurban/sızıntı veritabanı
+- **Ransomware.live** — <https://www.ransomware.live>
+- **RansomLook** — <https://www.ransomlook.io>
+- **RansomFeed** — <https://ransomfeed.it>
+- **DarkFeed** — <https://darkfeed.io>
+- **Ransomwatch** — <https://github.com/joshhighet/ransomwatch>
+
+> ℹ️ Veriler eğitim/gösterim amaçlıdır. Ham `data.csv` yalnızca birkaç kayıt için
+> gerçek IOC (IP/hash) içerdiğinden, IOC arama modülünün tüm veri seti üzerinde
+> çalışabilmesi için backend, IOC'si olmayan kayıtlara **deterministik türetilmiş**
+> örnek IP/hash üretir (ayrıntı aşağıdaki *A note on IOCs* bölümünde).
+
+`data.csv` sütunları:
+
+| Sütun | Açıklama |
+|-------|----------|
+| `date` | Saldırı tarihi (YYYY-AA-GG) |
+| `ransomware_group` | Fidye yazılımı grubu / tehdit aktörü |
+| `country` | Hedef ülke — `Ülke (XX)` biçiminde (ör. `Turkey (TR)`) |
+| `target_sector` | Hedef sektör (serbest metin, backend'de gruplanır) |
+| `attack_vector` | İlk erişim / saldırı vektörü |
+| `technique` | MITRE ATT&CK tekniği (ör. `T1486 - Data Encrypted for Impact`) |
+| `Severity` | Önem derecesi (1–10) |
+| `ioc_ip`, `ioc_hash` | İsteğe bağlı gerçek IOC değerleri |
+
+### ⚙️ Genel işleyiş
+
+1. **Yükleme & temizleme** — Go backend açılışta `data.csv`'yi okur; ülke adını/ISO
+   kodunu ayırır, MITRE tekniği kimliğini çıkarır ve alanları normalize eder.
+2. **Normalizasyon** — ~90 farklı sektör etiketi **≤16 kategoriye** indirilir, dağınık
+   saldırı vektörleri sadeleştirilir, grup adı varyantları tek isimde birleştirilir
+   (ör. `The Gentlemen` → `CMD`).
+3. **API** — temizlenmiş kayıtlar ve hesaplanan istatistikler `/api/*` uçlarından
+   JSON olarak sunulur.
+4. **Arayüz** — React + Recharts paneli bu veriyi grafiklerle (dağılımlar, dünya
+   haritası, zaman çizelgesi, IOC arama) gösterir.
+
+### ▶️ Çalıştırma (özet)
+
+```bash
+docker compose up --build      # → http://localhost:8090
+```
+
+Yerel geliştirme için aşağıdaki *Running → Locally* bölümüne bakın.
+
+---
+
 ## Features
 
 **Data analysis** (all derived from `data.csv`)
@@ -54,7 +112,8 @@ group, the matching incident records and their severity, with a small result sum
 docker compose up --build
 ```
 
-Then open **http://localhost:8080**. The container serves both the API and the UI.
+Then open **http://localhost:8090** (compose maps host `8090` → container `8080`).
+The container serves both the API and the UI.
 
 ### Locally (for development)
 
