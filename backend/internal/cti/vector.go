@@ -2,9 +2,6 @@ package cti
 
 import "strings"
 
-// canonicalVector tidies the free-text attack_vector column (which contains
-// blanks, stray dashes and many near-duplicate phrasings) into a small, clean
-// canonical set. First keyword match wins.
 func canonicalVector(raw string) string {
 	s := strings.ToLower(strings.TrimSpace(raw))
 	if s == "" || s == "-" {

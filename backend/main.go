@@ -13,8 +13,6 @@ import (
 func main() {
 	csvPath := env("DATA_CSV", "")
 	if csvPath == "" {
-		// Look in the current dir first, then the repo root (one level up), so
-		// `go run .` from ./backend finds ../data.csv during local development.
 		for _, candidate := range []string{"data.csv", "../data.csv"} {
 			if _, err := os.Stat(candidate); err == nil {
 				csvPath = candidate

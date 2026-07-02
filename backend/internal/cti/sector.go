@@ -2,9 +2,6 @@ package cti
 
 import "strings"
 
-// categorizeSector consolidates the ~90 free-text target sectors from the CSV
-// into <=16 canonical buckets. First keyword match wins, so ordering matters
-// (specific rules before generic ones).
 func categorizeSector(detail string) string {
 	s := strings.ToLower(strings.TrimSpace(detail))
 	if s == "" || s == "unknown" {

@@ -1,19 +1,10 @@
-# Dependencies
 **/node_modules
-
-# Frontend build output
 frontend/dist
-
-# Go build artifacts
 backend/server
 backend/*.exe
-
-# Editor / OS
 .DS_Store
 Thumbs.db
 *.log
-
-# Local tooling / secrets
 .claude/
 .env
 .env.local
